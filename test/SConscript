@@ -1,13 +1,13 @@
 from SConfig import *
 
 Import('environment')
-testSources = ['main.cpp']
-test = environment.Program(target = TEST_TARGET, source = testSources, LIBS = [], LIBPATH = '#' + BUILD_DIR + '/' + RELEASE_CONFIG)
+testSources = ['main.cpp','gtest/gtest-all.cc']
+test = environment.Program(target = TEST_TARGET, source = testSources, LIBS = [], LIBPATH = '#' + BUILD_DIR + '/' + RELEASE_CONFIG, CPPPATH = '.')
 environment.Install('#' + OUTPUT_DIR + '/' + TEST_CONFIG, test)
 
 if environment['PLATFORM'] == 'posix':
-	testRun = Command(target = 'testRun', source = testSources, action = OUTPUT_DIR + '/' + TEST_CONFIG +'/' + TEST_TARGET)
+    testRun = environment.Command(target = 'testRun', source = testSources, action = OUTPUT_DIR + '/' + TEST_CONFIG +'/' + TEST_TARGET)
 else:
-	testRun = Command(target = 'testRun', source = testSources, action = OUTPUT_DIR + '\\' + TEST_CONFIG +'\\' + TEST_TARGET + '.exe')
+    testRun = environment.Command(target = 'testRun', source = testSources, action = OUTPUT_DIR + '\\' + TEST_CONFIG +'\\' + TEST_TARGET + '.exe')
 
 AlwaysBuild(testRun)

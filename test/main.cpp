@@ -1,6 +1,7 @@
-#include <iostream>
+#include <gtest/gtest.h>
 
-int main() {
-	std::cout << "Test passed" << std::endl;
-	return 0;
+GTEST_API_ int main(int argc, char **argv)
+{
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
