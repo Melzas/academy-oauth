@@ -1,24 +1,14 @@
 from SConfig import *
 
 def compileDebug():
-    if environment['CC'] == 'cl':
-        environment.Append( CCFLAGS = [ '/Zi', '/Od'])
-    else:
-        environment.Append( CCFLAGS = [ '-g', '-O0'] )
+    environment.Append( CCFLAGS = [ '-g', '-O0'] )
     commonBuild()
 
 def compileRelease():
-    if environment['CC'] == 'cl':
-        environment.Append( CCFLAGS = ['/Ox'] )
-    else:
-        environment.Append( CCFLAGS = ['-O2'] )
+    environment.Append( CCFLAGS = ['-O2'] )
     commonBuild()
 
 def compileTest():
-    if environment['CC'] == 'cl':
-        environment.Append( CCFLAGS = [] )
-    else:
-        environment.Append( CCFLAGS = [] )
     commonBuild()
     
 

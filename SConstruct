@@ -1,14 +1,12 @@
 from SConfig import *
 
 configuration = ARGUMENTS.get('config', RELEASE_CONFIG);
-if configuration == DEBUG_CONFIG and Environment()['CC'] == 'cl':
+if Environment()['CC'] == 'cl':
     environment = Environment(CPPPATH='#include', tools = ['mingw']);
 else:
     environment = Environment(CPPPATH='#include')
 
-if environment['CC'] == 'cl':
-    environment.Append(CCFLAGS = ['/WX', '/W3', '/EHsc'])
-elif environment['CC'] == 'gcc':
+if environment['CC'] == 'gcc':
     environment.Append(CCFLAGS = ['-Wall', '-Wextra', '-Werror', '-pedantic', '-std=c++0x'])
 else:
     print 'Unsupported Compiler: ' + environment['CC']
