@@ -8,12 +8,6 @@ Import('configuration')
 Import('environment')
 Import('buildWithRsa')
 Import('opensslLibPath')
-
-def sslLibrary():
-    if environment['PLATFORM'] == 'win32':
-        return "%seay32%s" % (environment['LIBPREFIX'], environment['SHLIBSUFFIX'])
-    else:
-        return "%scrypto%s" % (environment['LIBPREFIX'], environment['SHLIBSUFFIX'])
         
 def compileDebug():
     environment.Append( CCFLAGS = [ '-g', '-O0'] )
@@ -31,18 +25,11 @@ def commonBuild():
     installDirPath = '#' + os.path.join(OUTPUT_DIR, configuration)
     environment.Install(installDirPath, oauthLib)
 
+libSources.extend([f for f in Glob('utility/*.cpp')
+    if os.path.join('utility', 'RsaSignature.cpp') not in f.path])
 if buildWithRsa:
-    print 'Building library with openssl and RSA-SHA1 signature'
-    libSources.extend(Glob('utility/*.cpp'))
     libSources.extend(Glob('crypto/rsa/*.cpp'))
-    libraryPath = os.path.join(opensslLibPath, sslLibrary())
-    print libraryPath
-    if not os.path.isfile(libraryPath):
-        print 'OpenSSL not found in ' + opensslLibPath
-        print 'Specify path to OpenSSL lib folder with --openssl-path'
-        Exit(1)
-    libSources.extend([libraryPath])
-    
+    libSources.extend(environment.Object(os.path.join('utility', 'RsaSignature.cpp'), CCFLAGS='-fpermissive'))
 else:
     # Do not build RsaSignature.cpp
     print 'Building library without RSA-SHA1 signature method'

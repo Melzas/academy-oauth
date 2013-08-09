@@ -8,10 +8,13 @@ else:
     environment = Environment(CPPPATH = cppPath)
 
 defaultSslLibPath = ''
+defaultSslIncludePath = ''
 if environment['PLATFORM'] == 'win32':
-    defaultSslLibPath = os.path.join('C:\\', 'Program Files', 'OpenSSL')
+    defaultSslLibPath = os.path.join('C:\\', 'OpenSSL-Win32', 'lib', 'MinGW')
+    defaultSslIncludePath = os.path.join('C:\\', 'OpenSSL-Win32', 'include')
 else:
     defaultSslLibPath = '/usr/lib'
+    defaultSslIncludePath = '/usr/lib/include'
 
 AddOption('--with-rsa', action = 'store_true', dest = 'buildWithRsa', default = False,
 help = 'Build the library with RSA-SHA1 signature and OpenSSL')
@@ -21,7 +24,7 @@ nargs = 1, type = 'string', help = 'Path to directory with OpenSSL crypto librar
 (libeay32.dll on Windows or libcrypto.so on Linux)')
 
 AddOption('--openssl-includepath', action = 'store', dest = 'opensslIncludePath', 
-default = os.path.join(defaultSslLibPath, 'include'), nargs = 1, type = 'string', 
+default = defaultSslIncludePath, nargs = 1, type = 'string', 
 help = 'Path to OpenSSL include directory')
 
 buildWithRsa = GetOption('buildWithRsa')
@@ -49,7 +52,7 @@ if configuration == TEST_CONFIG:
     exports = {'configuration' : DEBUG_CONFIG, 'environment' : environment, 'buildWithRsa': True,
     'opensslLibPath' : opensslLibPath})
     SConscript('test/SConscript', variant_dir = variantDirPath, duplicate = 0,
-    exports = {'environment' : environment})
+    exports = {'environment' : environment, 'opensslLibPath' : opensslLibPath})
 else:
     SConscript('src/SConscript', variant_dir = variantDirPath, duplicate = 0,
     exports = {'configuration' : configuration, 'environment' : environment,

@@ -9,6 +9,10 @@
 #include "crypto/rsa/sha1.h"
 #include "crypto/base64.h"
 
+extern "C" {
+#include <openssl/applink.c>
+}
+
 namespace OAuth
 {
     namespace Utility
