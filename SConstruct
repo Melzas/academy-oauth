@@ -3,9 +3,10 @@ from SConfig import *
 
 cppPath = ['#include', '#src']
 if Environment()['CC'] == 'cl':
-    environment = Environment(CPPPATH = cppPath, tools = ['mingw']);
+    environment = Environment(tools = ['mingw'])
 else:
-    environment = Environment(CPPPATH = cppPath)
+    environment = Environment()
+environment.Replace(ENV = {'PATH' : os.environ['PATH']}, CPPPATH = cppPath)
 
 defaultSslLibPath = ''
 defaultSslIncludePath = ''

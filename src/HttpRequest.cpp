@@ -1,8 +1,9 @@
+#include <HttpRequest.h>
+
 #include <cassert>
 #include <stdexcept>
 
-#include "HttpRequest.h"
-#include "utility/Url.h"
+#include <utility/Url.h>
 
 namespace OAuth
 {
