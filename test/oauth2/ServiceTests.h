@@ -199,6 +199,44 @@ namespace OAuth2
         ASSERT_THROW(service.getAccessToken().get(), OAuth2::TokenException);
     }
 
+    TEST_F(ServiceTests2, refresh_token_ok)
+    {
+        std::string sentRequestBody;
+        std::string sentRequestContentType;
+
+        Service service = authCodeGrantBuilder.setSendRequest(
+                [&] (const OAuth::HttpRequest &request) -> std::string {
+                    sentRequestBody = request.getBody();
+                    sentRequestContentType = request.getHeaders()
+                        .find(OAuth::HEADER_CONTENT_TYPE)->second;
+                    return succesfulTokenResponse;
+                }
+            ).build();
+
+        Token expiredToken("accessToken", Token::EXPIRES_UNDEFINED, "tGzv3JOkF0XG5Qx2TlKWIA");
+
+        Token token = service.refreshAccessToken(expiredToken).get();
+
+        ASSERT_EQ("grant_type=refresh_token&refresh_token=tGzv3JOkF0XG5Qx2TlKWIA", sentRequestBody);
+        ASSERT_EQ(OAuth::FORM_URLENCODED, sentRequestContentType);
+
+        ASSERT_EQ("2YotnFZFEjr1zCsicMWpAA", token.getAccessToken());
+        ASSERT_EQ("example", token.getTokenType());
+        ASSERT_EQ("tGzv3JOkF0XG5Qx2TlKWIA", token.getRefreshToken());
+    }
+
+    TEST_F(ServiceTests2, refresh_token_error)
+    {
+        Service service = authCodeGrantBuilder.setSendRequest(
+                [&] (const OAuth::HttpRequest &request) -> std::string {
+                    return "{\"error\":\"invalid_request\"}";
+                }
+            ).build();
+
+        Token token = Token("accessToken");
+        ASSERT_THROW(service.refreshAccessToken(token).get(), OAuth2::TokenException);
+    }
+
     TEST_F(ServiceTests2, sign_request)
     {
         Service service = implicitGrantBuilder.build();

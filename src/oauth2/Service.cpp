@@ -170,6 +170,21 @@ namespace OAuth2
             throw std::logic_error("Unsupported token type " + token.getTokenType());
     }
 
+    std::future<Token> Service::refreshAccessToken(const Token &expiredToken) const
+    {
+        OAuth::HttpRequest request(OAuth::HttpRequestType::POST,
+            configuration.getTokenEndpoint());
+        request.addHeader(OAuth::HEADER_CONTENT_TYPE, OAuth::FORM_URLENCODED);
+        OAuth::ParameterList body;
+        body.addRaw(GRANT_TYPE, REFRESH_TOKEN);
+        body.addRaw(REFRESH_TOKEN, expiredToken.getRefreshToken());
+        request.setBody(body.asQueryString().substr(1));
+
+        return std::async([=] () {
+            return parseTokenResponse(Utility::parseSingleLevelJSON(sendRequest(request)));
+        });
+    }
+
     Token Service::parseTokenResponse(const OAuth::ParameterList &parameters) const
     {
         if (parameters.contain(ERROR)) {
