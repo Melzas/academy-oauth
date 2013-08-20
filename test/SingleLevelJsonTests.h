@@ -2,7 +2,7 @@
 
 #include <exception>
 
-#include <utility/SingleLevelJSON.h>
+#include <utility/SingleLevelJson.h>
 
 namespace Utility
 {

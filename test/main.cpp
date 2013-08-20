@@ -7,7 +7,7 @@
 #include "HostResourceFromUrl.h"
 #include "ParameterListTests.h"
 #include "DefaultSendRequestTests.h"
-#include "SingleLevelJSONTests.h"
+#include "SingleLevelJsonTests.h"
 
 #include "oauth1/SignatureTests.h"
 #include "oauth1/RsaSignatureTests.h"
