@@ -16,6 +16,7 @@ namespace OAuth
 
     extern const std::string FORM_URLENCODED;
     extern const std::string HEADER_CONTENT_TYPE;
+    extern const std::string HEADER_AUTHORIZATION;
 
     /**
      *  Class for working with HTTP requests.

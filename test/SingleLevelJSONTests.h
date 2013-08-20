@@ -41,7 +41,7 @@ namespace OAuthTesting
 
     TEST(SingleLevelJSONTests, parse_1)
     {
-        Utility::string_pair_t parsed = Utility::parseSingleLevelJSON(
+        OAuth::ParameterList parsed = Utility::parseSingleLevelJSON(
         "{\r\n"
         "   \"access_token\":\"2YotnFZFEjr1zCsicMWpAA\",\r\n"
         "   \"token_type\":\"example\",\r\n"
@@ -51,11 +51,11 @@ namespace OAuthTesting
         "   \"escape_test\":\"\\\"\\\\\\/\\b\\f\\n\\r\\t\"\r\n"
         "}\r\n");
 
-        ASSERT_EQ("2YotnFZFEjr1zCsicMWpAA", parsed["access_token"]);
-        ASSERT_EQ("example", parsed["token_type"]);
-        ASSERT_EQ("3600", parsed["expires_in"]);
-        ASSERT_EQ("tGzv3JOkF0XG5Qx2TlKWIA", parsed["refresh_token"]);
-        ASSERT_EQ("example_value", parsed["example_parameter"]);
-        ASSERT_EQ("\"\\/\b\f\n\r\t", parsed["escape_test"]);
+        ASSERT_EQ("2YotnFZFEjr1zCsicMWpAA", parsed.getFirst("access_token"));
+        ASSERT_EQ("example", parsed.getFirst("token_type"));
+        ASSERT_EQ("3600", parsed.getFirst("expires_in"));
+        ASSERT_EQ("tGzv3JOkF0XG5Qx2TlKWIA", parsed.getFirst("refresh_token"));
+        ASSERT_EQ("example_value", parsed.getFirst("example_parameter"));
+        ASSERT_EQ("\"\\/\b\f\n\r\t", parsed.getFirst("escape_test"));
     }
 }

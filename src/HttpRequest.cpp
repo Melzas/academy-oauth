@@ -9,6 +9,7 @@ namespace OAuth
 {
     const std::string FORM_URLENCODED = "application/x-www-form-urlencoded";
     const std::string HEADER_CONTENT_TYPE = "Content-Type";
+    extern const std::string HEADER_AUTHORIZATION = "Authorization";
 
     HttpRequest::HttpRequest(HttpRequestType httpRequestType, const std::string &url)
     {

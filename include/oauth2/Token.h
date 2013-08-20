@@ -9,6 +9,8 @@ namespace OAuth2
     {
     public:
         static const std::string BEARER_TOKEN;
+        static const int EXPIRES_UNDEFINED;
+        static const std::string REFRESH_UNDEFINED;
 
         /**
          *  Creates OAuth 2.0 Token and refresh token.
@@ -18,8 +20,8 @@ namespace OAuth2
          *  @param tokenType Token type string.
          */
         Token(const std::string &accessToken,
-                int expiresIn = -1,
-                const std::string &refreshToken = "",
+                int expiresIn = EXPIRES_UNDEFINED,
+                const std::string &refreshToken = REFRESH_UNDEFINED,
                 const std::string &tokenType = BEARER_TOKEN);
 
         /**

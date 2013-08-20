@@ -76,7 +76,7 @@ namespace OAuth2
          * @param sendRequestFunction Function to make HTTP requests
          * @returns this ServiceBuilder object to use for further configuration
          */
-        ServiceBuilder &setSendRequest(send_request_t &sendRequestFunction);
+        ServiceBuilder &setSendRequest(const send_request_t &sendRequestFunction);
 
         /**
          * Create Service object with all specified settings

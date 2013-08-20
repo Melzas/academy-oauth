@@ -4,17 +4,16 @@
 #include <map>
 #include <string>
 
+#include <ParameterList.h>
+
 namespace Utility
 {
-    typedef std::map<std::string, std::string> string_pair_t;
-
     /**
-     *  Parse single level JSON to map<string,string>
+     *  Parse single level JSON to ParameterList
      *  @param data JSON string. No arrays, no nested objects.
-     *  @returns map<string,string>, representing object.
-     *  e.g. {"name":"value"} will produce map where map["name"] == "value";
+     *  @returns ParameterList, representing object.
      */
-    string_pair_t parseSingleLevelJSON(std::string data);
+    OAuth::ParameterList parseSingleLevelJSON(std::string data);
 }
 
 #endif

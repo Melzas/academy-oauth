@@ -60,7 +60,7 @@ namespace OAuth2
         return *this;
     }
 
-    ServiceBuilder &ServiceBuilder::setSendRequest(send_request_t &sendRequestFunction)
+    ServiceBuilder &ServiceBuilder::setSendRequest(const send_request_t &sendRequestFunction)
     {
         this->sendRequestFunction = sendRequestFunction;
         return *this;

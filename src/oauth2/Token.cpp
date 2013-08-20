@@ -3,6 +3,8 @@
 namespace OAuth2
 {
     const std::string Token::BEARER_TOKEN = "bearer";
+    const int Token::EXPIRES_UNDEFINED = -1;
+    const std::string Token::REFRESH_UNDEFINED = "";
 
     Token::Token(const std::string &accessToken,
             int expiresIn,

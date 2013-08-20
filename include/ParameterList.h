@@ -65,6 +65,21 @@ namespace OAuth
          */
         const parameters_t &getParameters() const;
 
+        /**
+         *  Get value of parameter with specified name.
+         *  @param name Parameter name.
+         *  @throws std::invalid_argument if parameter does not exist.
+         *  @returns Parameter value.
+         */
+        const std::string &getFirst(const std::string &name) const;
+
+        /**
+         *  Check, if list contains parameter with specified name.
+         *  @param name Parameter name.
+         *  @return True if parameter exists, false otherwise.
+         */
+        bool contain(const std::string &name) const;
+
     private:
         parameters_t parameters;
     };

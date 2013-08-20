@@ -5,6 +5,8 @@
 #include <regex>
 #include <cassert>
 
+#include <ParameterList.h>
+
 namespace OAuth
 {
     namespace Utility
@@ -70,6 +72,14 @@ namespace OAuth
         {
             const std::pair<int, int> hostPosition = getHostPosition(url);
             return url.substr(hostPosition.second);
+        }
+
+        std::string extractQueryParameters(const std::string &url)
+        {
+            size_t position = url.find(ParameterList::QUERY_SEPARATOR);
+            if (position == std::string::npos)
+                throw std::invalid_argument("Url doesn't contain query parameters");
+            return url.substr(position + 1);
         }
 
         std::string normalizeUrl(std::string url)

@@ -103,9 +103,9 @@ namespace Utility
         return readUnquoted(dataStream);
     }
 
-    string_pair_t parseSingleLevelJSON(std::string data)
+    OAuth::ParameterList parseSingleLevelJSON(std::string data)
     {
-        string_pair_t parsedData;
+        OAuth::ParameterList parsedData;
 
         data = trimBracesIfExist(data) + ",";
         std::istringstream dataStream(data);
@@ -123,7 +123,7 @@ namespace Utility
                 throw std::invalid_argument("JSON parsing failed");
 
             skipWhitespaces(dataStream);
-            parsedData[name] = readPairElement(dataStream);
+            parsedData.addRaw(name, readPairElement(dataStream));
 
             skipWhitespaces(dataStream);
             dataStream>>character;

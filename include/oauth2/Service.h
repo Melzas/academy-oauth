@@ -6,6 +6,8 @@
 #include <future>
 
 #include "ServiceConfiguration.h"
+#include "ParameterList.h"
+#include "TokenException.h"
 
 namespace OAuth
 {
@@ -25,6 +27,20 @@ namespace OAuth2
         static const std::string REDIRECT_URI;
         static const std::string SCOPE;
         static const std::string STATE;
+        static const std::string ACCESS_TOKEN;
+        static const std::string TOKEN_TYPE;
+        static const std::string EXPIRES_IN;
+        static const std::string REFRESH_TOKEN;
+        static const std::string GRANT_TYPE;
+        static const std::string AUTHORIZATION_CODE;
+        static const std::string CODE;
+        static const std::string PASSWORD;
+        static const std::string USERNAME;
+        static const std::string CLIENT_CREDENTIALS;
+
+        static const std::string ERROR;
+        static const std::string ERROR_DESCRIPTION;
+        static const std::string ERROR_URI;
 
     public:
         /**
@@ -72,6 +88,9 @@ namespace OAuth2
         std::future<Token> getAccessTokenClientCredentialsGrant() const;
 
         std::string makeRedirectUrlParameters(const std::string &state, const std::string &responseType) const;
+
+        TokenException makeTokenError(const OAuth::ParameterList &parameters) const;
+        Token parseTokenResponse(const OAuth::ParameterList &parameters) const;
     };
 }
 
