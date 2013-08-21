@@ -96,7 +96,8 @@ namespace OAuth2
 
     std::future<Token> Service::getAccessTokenAuthCodeGrant(const std::string &url) const
     {
-        const std::string parametersString = OAuth::Utility::extractQueryParameters(url);
+        const std::string parametersString = OAuth::Utility::extractParameters(url,
+                OAuth::ParameterList::QUERY_SEPARATOR);
         const OAuth::ParameterList parameters(parametersString);
 
         if (parameters.contain(ERROR)) {
@@ -124,7 +125,9 @@ namespace OAuth2
 
     std::future<Token> Service::getAccessTokenImplicitGrant(const std::string &url) const
     {
-        const std::string parametersString = OAuth::Utility::extractQueryParameters(url);
+        const char FRAGMENT_SEPARATOR = '#';
+        const std::string parametersString = OAuth::Utility::extractParameters(url,
+                FRAGMENT_SEPARATOR);
         const OAuth::ParameterList parameters(parametersString);
 
         return std::async([=] () {
