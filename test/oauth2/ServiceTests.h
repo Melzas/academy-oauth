@@ -100,7 +100,7 @@ namespace OAuth2
     TEST_F(ServiceTests2, get_access_token_implicit_grant_ok)
     {
         Service service = implicitGrantBuilder.build();
-        Token token = service.getAccessToken("http://example.com/cb?access_token=2YotnFZFEjr1zCsicMWpAA"
+        Token token = service.getAccessToken("http://example.com/cb#access_token=2YotnFZFEjr1zCsicMWpAA"
             "&state=xyz&token_type=example&expires_in=3600").get();
         ASSERT_EQ("2YotnFZFEjr1zCsicMWpAA", token.getAccessToken());
         ASSERT_EQ("example", token.getTokenType());
@@ -174,7 +174,7 @@ namespace OAuth2
     {
         Service service = implicitGrantBuilder.build();
         ASSERT_THROW(
-            service.getAccessToken("https://client.example.com/cb?error=access_denied&state=xyz").get(),
+            service.getAccessToken("https://client.example.com/cb#error=access_denied&state=xyz").get(),
             OAuth2::TokenException);
 
     }
