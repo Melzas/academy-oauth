@@ -190,10 +190,11 @@ namespace OAuth2
         if (parameters.contain(ERROR)) {
             throw makeTokenError(parameters);
         } else {
-            if (!parameters.contain(ACCESS_TOKEN) || !parameters.contain(TOKEN_TYPE))
+            if (!parameters.contain(ACCESS_TOKEN))
                 throw std::invalid_argument("Token parsing failed. Required parameter not set");
             std::string accessToken = parameters.getFirst(ACCESS_TOKEN);
-            std::string tokenType = parameters.getFirst(TOKEN_TYPE);
+            std::string tokenType = parameters.contain(TOKEN_TYPE) ?
+                    parameters.getFirst(TOKEN_TYPE) : Token::BEARER_TOKEN;
 
             int expiresIn = Token::EXPIRES_UNDEFINED;
             if (parameters.contain(EXPIRES_IN)) {
