@@ -237,12 +237,39 @@ namespace OAuth2
         ASSERT_THROW(service.refreshAccessToken(token).get(), OAuth2::TokenException);
     }
 
-    TEST_F(ServiceTests2, sign_request)
+    TEST_F(ServiceTests2, sign_request_header)
     {
-        Service service = implicitGrantBuilder.build();
+        Service service = implicitGrantBuilder.setSignatureType(SIGNATURE_HEADER).build();
         Token token("mF_9.B5f-4.1JqM");
         OAuth::HttpRequest httpRequest(OAuth::POST, "https://data.example.com/");
         service.signRequest(httpRequest, token);
         ASSERT_EQ("Bearer mF_9.B5f-4.1JqM", httpRequest.getHeaders().find("Authorization")->second);
+    }
+
+    TEST_F(ServiceTests2, sign_request_query)
+    {
+        // Default query string signature
+        Service service = implicitGrantBuilder.build();
+        Token token("mF_9.B5f-4.1JqM");
+        OAuth::HttpRequest httpRequest(OAuth::POST, "https://data.example.com/method");
+        service.signRequest(httpRequest, token);
+        ASSERT_STREQ("https://data.example.com/method?access_token=mF_9.B5f-4.1JqM",
+                httpRequest.getUrl().c_str());
+    }
+
+    TEST_F(ServiceTests2, sign_request_body)
+    {
+        Service service = implicitGrantBuilder.setSignatureType(SIGNATURE_BODY).build();
+        Token token("mF_9.B5f-4.1JqM");
+        OAuth::HttpRequest httpRequest(OAuth::POST, "https://data.example.com/method");
+        service.signRequest(httpRequest, token);
+        ASSERT_STREQ("access_token=mF_9.B5f-4.1JqM", httpRequest.getBody().c_str());
+
+        OAuth::HttpRequest anotherRequest(OAuth::POST, "https://data.example.com/method");
+        anotherRequest.addHeader(OAuth::HEADER_CONTENT_TYPE, OAuth::FORM_URLENCODED);
+        anotherRequest.setBody("name=value&a1=a2");
+        service.signRequest(anotherRequest, token);
+        ASSERT_STREQ("name=value&a1=a2&access_token=mF_9.B5f-4.1JqM",
+                anotherRequest.getBody().c_str());
     }
 }
