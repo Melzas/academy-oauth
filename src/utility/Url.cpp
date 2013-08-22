@@ -74,11 +74,11 @@ namespace OAuth
             return url.substr(hostPosition.second);
         }
 
-        std::string extractQueryParameters(const std::string &url)
+        std::string extractParameters(const std::string &url, const char separator)
         {
-            size_t position = url.find(ParameterList::QUERY_SEPARATOR);
+            size_t position = url.find(separator);
             if (position == std::string::npos)
-                throw std::invalid_argument("Url doesn't contain query parameters");
+                throw std::invalid_argument("Url doesn't contain parameters");
             return url.substr(position + 1);
         }
 
