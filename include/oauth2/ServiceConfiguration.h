@@ -8,6 +8,8 @@ namespace OAuth2
     enum GrantType {AUTH_CODE_GRANT, IMPLICIT_GRANT,
         OWNER_CREDENTIALS_GRANT, CLIENT_CREDENTIALS_GRANT};
 
+    enum SignatureType {SIGNATURE_HEADER, SIGNATURE_QUERY, SIGNATURE_BODY};
+
     /**
      * Groups OAuth 2.0 config values
      */
@@ -15,6 +17,7 @@ namespace OAuth2
     {
     public:
         GrantType getGrantType() const;
+        SignatureType getSignatureType() const;
 
         /**
          * Get 'grant_type' parameter string, e.g. 'authorization_code' for Authorization Code Grant
@@ -42,6 +45,8 @@ namespace OAuth2
         friend class ServiceBuilder;
         /**
          * @param grantType OAuth 2.0 Authorization method
+         * @param signatureType Determines place of the signature in the request:
+         * authrization header, query string or body
          * @param authCodeEndpoint URL to obtain an authorization code
          * @param tokenEndpoint URL to obtain an access token
          * @param clientId ID of the client
@@ -52,13 +57,21 @@ namespace OAuth2
          * @param password Resource owner Password,
          * used for Resource Owner Password Credentials Grant
          */
-        ServiceConfiguration(GrantType grantType, const std::string &authCodeEndpoint,
-                const std::string &tokenEndpoint, const std::string &clientId,
-                const std::string &redirectUri, const std::string &scope,
-                const std::string &username, const std::string &password);
+        ServiceConfiguration(
+                GrantType grantType
+                ,SignatureType signatureType
+                ,const std::string &authCodeEndpoint
+                ,const std::string &tokenEndpoint
+                ,const std::string &clientId
+                ,const std::string &redirectUri
+                ,const std::string &scope
+                ,const std::string &username
+                ,const std::string &password
+                );
 
     private:
         GrantType grantType;
+        SignatureType signatureType;
         std::string authEndpoint;
         std::string tokenEndpoint;
         std::string clientId;

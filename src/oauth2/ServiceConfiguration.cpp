@@ -5,21 +5,37 @@
 
 namespace OAuth2
 {
-    ServiceConfiguration::ServiceConfiguration(GrantType grantType,
-            const std::string &authCodeEndpoint, const std::string &tokenEndpoint,
-            const std::string &clientId, const std::string &redirectUri,
-            const std::string &scope, const std::string &username,
-            const std::string &password) :
-            grantType(grantType), authEndpoint(authCodeEndpoint),
-            tokenEndpoint(tokenEndpoint), clientId(clientId),
-            redirectUri(redirectUri), scope(scope),
-            username(username), password(password)
+    ServiceConfiguration::ServiceConfiguration(
+            GrantType grantType
+            ,SignatureType signatureType
+            ,const std::string &authCodeEndpoint
+            ,const std::string &tokenEndpoint
+            ,const std::string &clientId
+            ,const std::string &redirectUri
+            ,const std::string &scope
+            ,const std::string &username
+            ,const std::string &password)
+                :
+            grantType(grantType)
+            ,signatureType(signatureType)
+            ,authEndpoint(authCodeEndpoint)
+            ,tokenEndpoint(tokenEndpoint)
+            ,clientId(clientId)
+            ,redirectUri(redirectUri)
+            ,scope(scope)
+            ,username(username)
+            ,password(password)
     {
     }
 
     GrantType ServiceConfiguration::getGrantType() const
     {
         return grantType;
+    }
+
+    SignatureType ServiceConfiguration::getSignatureType() const
+    {
+        return signatureType;
     }
 
     std::string ServiceConfiguration::getGrantTypeString() const

@@ -9,6 +9,7 @@
 #include <oauth2/Token.h>
 #include <oauth2/TokenException.h>
 #include <utility/Url.h>
+#include <utility/Extractor.h>
 #include <utility/SingleLevelJson.h>
 #include <DefaultSendRequest.h>
 #include <ParameterList.h>
@@ -164,10 +165,23 @@ namespace OAuth2
 
     void Service::signRequest(OAuth::HttpRequest &request, const Token &token) const
     {
-        if (token.getTokenType() == Token::BEARER_TOKEN)
-            request.addHeader(OAuth::HEADER_AUTHORIZATION, "Bearer " + token.getAccessToken());
-        else
+        if (token.getTokenType() == Token::BEARER_TOKEN) {
+            switch(configuration.getSignatureType()) {
+            case SIGNATURE_HEADER:
+                request.addHeader(OAuth::HEADER_AUTHORIZATION, "Bearer " + token.getAccessToken());
+                break;
+            case SIGNATURE_QUERY:
+                request.addQueryParameter(ACCESS_TOKEN, token.getAccessToken());
+                break;
+            case SIGNATURE_BODY:
+                OAuth::ParameterList parameters = OAuth::Utility::extractBodyParameters(request);
+                parameters.add(ACCESS_TOKEN, token.getAccessToken());
+                request.setBody(parameters.asQueryString().substr(1));
+                break;
+            }
+        } else {
             throw std::logic_error("Unsupported token type " + token.getTokenType());
+        }
     }
 
     std::future<Token> Service::refreshAccessToken(const Token &expiredToken) const

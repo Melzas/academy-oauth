@@ -24,6 +24,16 @@ namespace OAuth2
         ServiceBuilder &setGrantType(GrantType grantType);
 
         /**
+         * Set the signature type
+         * @param signatureType Type of signature. One of:
+         * SIGNATURE_HEADER: Append signature to the 'Authorization' header
+         * SIGNATURE_QUERY: Append signature as a query parameter
+         * SIGNATURE_BODY: Append signature to the request body
+         * @returns this ServiceBuilder object to use for further configuration
+         */
+        ServiceBuilder &setSignatureType(SignatureType signatureType);
+
+        /**
          * Set authorization code URL
          * @param authEndpoint URL to obtain an authorization code
          * @returns this ServiceBuilder object to use for further configuration
@@ -93,6 +103,7 @@ namespace OAuth2
         void checkOwnerCredentialsGrant();
 
         GrantType grantType;
+        SignatureType signatureType;
         std::string authEndpoint;
         std::string tokenEndpoint;
         std::string clientId;
