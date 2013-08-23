@@ -73,11 +73,26 @@ namespace OAuth2
         return *this;
     }
 
+    ServiceBuilder &ServiceBuilder::addAuthParameter(const std::string &name,
+            const std::string &value)
+    {
+        customAuthParameters.addRaw(name, value);
+        return *this;
+    }
+
+    ServiceBuilder &ServiceBuilder::addTokenParameter(const std::string &name,
+            const std::string &value)
+    {
+        customTokenParameters.addRaw(name, value);
+        return *this;
+    }
+
     Service ServiceBuilder::build()
     {
         checkParameters();
         ServiceConfiguration configuration(grantType, signatureType, authEndpoint,
-                tokenEndpoint, clientId, redirectUri, scope, username, password);
+                tokenEndpoint, clientId, redirectUri, scope, username, password,
+                customAuthParameters, customTokenParameters);
         Service service(configuration, sendRequestFunction);
         return service;
     }

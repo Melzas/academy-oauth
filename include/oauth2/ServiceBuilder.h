@@ -89,6 +89,22 @@ namespace OAuth2
         ServiceBuilder &setSendRequest(const send_request_t &sendRequestFunction);
 
         /**
+         * Add custom parameter to the redirect URL
+         * @param name Name of a parameter
+         * @param value Value of a parameter
+         * @returns this ServiceBuilder object to use for further configuration
+         */
+        ServiceBuilder &addAuthParameter(const std::string &name, const std::string &value);
+
+        /**
+         * Add custom parameter to the token request
+         * @param name Name of a parameter
+         * @param value Value of a parameter
+         * @returns this ServiceBuilder object to use for further configuration
+         */
+        ServiceBuilder &addTokenParameter(const std::string &name, const std::string &value);
+
+        /**
          * Create Service object with all specified settings
          * @returns Service object
          * @throws invalid_argument Throws exception, if some of required settings are not set
@@ -112,6 +128,8 @@ namespace OAuth2
         std::string username;
         std::string password;
         send_request_t sendRequestFunction;
+        OAuth::ParameterList customAuthParameters;
+        OAuth::ParameterList customTokenParameters;
     };
 }
 #endif

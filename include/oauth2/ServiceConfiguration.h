@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ParameterList.h"
+
 namespace OAuth2
 {
     enum GrantType {AUTH_CODE_GRANT, IMPLICIT_GRANT,
@@ -41,6 +43,9 @@ namespace OAuth2
         const std::string &getUsername() const;
         const std::string &getPassword() const;
 
+        const OAuth::ParameterList &getCustomAuthParameters() const;
+        const OAuth::ParameterList &getCustomTokenParameters() const;
+
     private:
         friend class ServiceBuilder;
         /**
@@ -67,6 +72,8 @@ namespace OAuth2
                 ,const std::string &scope
                 ,const std::string &username
                 ,const std::string &password
+                ,OAuth::ParameterList customAuthParameters
+                ,OAuth::ParameterList customTokenParameters
                 );
 
     private:
@@ -79,6 +86,8 @@ namespace OAuth2
         std::string scope;
         std::string username;
         std::string password;
+        OAuth::ParameterList customAuthParameters;
+        OAuth::ParameterList customTokenParameters;
     };
 }
 #endif

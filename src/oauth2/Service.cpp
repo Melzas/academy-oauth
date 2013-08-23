@@ -75,6 +75,8 @@ namespace OAuth2
             parameters.add(SCOPE, configuration.getScope());
         if (!state.empty())
             parameters.add(STATE, state);
+        if (!configuration.getCustomAuthParameters().getParameters().empty())
+            parameters.add(configuration.getCustomAuthParameters());
 
         return parameters.asQueryString().substr(1);
     }
@@ -116,6 +118,8 @@ namespace OAuth2
                 body.addRaw("redirect_uri", configuration.getRedirectUri());
             if (!configuration.getClientId().empty())
                 body.addRaw("client_id", configuration.getClientId());
+            if (!configuration.getCustomTokenParameters().getParameters().empty())
+                body.add(configuration.getCustomTokenParameters());
             request.setBody(body.asQueryString().substr(1));
 
             return std::async([=] () {
@@ -145,6 +149,8 @@ namespace OAuth2
         body.addRaw(GRANT_TYPE, PASSWORD);
         body.addRaw(USERNAME, configuration.getUsername());
         body.addRaw(PASSWORD, configuration.getPassword());
+        if (!configuration.getCustomTokenParameters().getParameters().empty())
+            body.add(configuration.getCustomTokenParameters());
         request.setBody(body.asQueryString().substr(1));
 
         return std::async([=] () {
@@ -159,6 +165,8 @@ namespace OAuth2
         request.addHeader(OAuth::HEADER_CONTENT_TYPE, OAuth::FORM_URLENCODED);
         OAuth::ParameterList body;
         body.addRaw(GRANT_TYPE, CLIENT_CREDENTIALS);
+        if (!configuration.getCustomTokenParameters().getParameters().empty())
+            body.add(configuration.getCustomTokenParameters());
         request.setBody(body.asQueryString().substr(1));
 
         return std::async([=] () {

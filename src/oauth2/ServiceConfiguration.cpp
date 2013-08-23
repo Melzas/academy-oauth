@@ -14,7 +14,9 @@ namespace OAuth2
             ,const std::string &redirectUri
             ,const std::string &scope
             ,const std::string &username
-            ,const std::string &password)
+            ,const std::string &password
+            ,OAuth::ParameterList customAuthParameters
+            ,OAuth::ParameterList customTokenParameters)
                 :
             grantType(grantType)
             ,signatureType(signatureType)
@@ -25,6 +27,8 @@ namespace OAuth2
             ,scope(scope)
             ,username(username)
             ,password(password)
+            ,customAuthParameters(customAuthParameters)
+            ,customTokenParameters(customTokenParameters)
     {
     }
 
@@ -99,5 +103,15 @@ namespace OAuth2
     const std::string &ServiceConfiguration::getPassword() const
     {
         return password;
+    }
+
+    const OAuth::ParameterList &ServiceConfiguration::getCustomAuthParameters() const
+    {
+        return customAuthParameters;
+    }
+
+    const OAuth::ParameterList &ServiceConfiguration::getCustomTokenParameters() const
+    {
+        return customTokenParameters;
     }
 }
