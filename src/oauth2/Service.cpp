@@ -5,6 +5,7 @@
 #include <functional>
 #include <future>
 #include <sstream>
+#include <algorithm>
 
 #include <oauth2/Token.h>
 #include <oauth2/TokenException.h>
@@ -168,7 +169,9 @@ namespace OAuth2
 
     void Service::signRequest(OAuth::HttpRequest &request, const Token &token) const
     {
-        if (token.getTokenType() == Token::BEARER_TOKEN) {
+        std::string tokenType = token.getTokenType();
+        std::transform(tokenType.begin(), tokenType.end(), tokenType.begin(), ::tolower);
+        if (tokenType == Token::BEARER_TOKEN) {
             switch(configuration.getSignatureType()) {
             case SIGNATURE_HEADER:
                 request.addHeader(OAuth::HEADER_AUTHORIZATION, "Bearer " + token.getAccessToken());
