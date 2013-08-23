@@ -6,15 +6,22 @@
 
 namespace OAuth2
 {
-    ServiceBuilder::ServiceBuilder()
+    ServiceBuilder::ServiceBuilder() :
+            grantType(AUTH_CODE_GRANT)
+           ,signatureType(SIGNATURE_QUERY)
+           ,sendRequestFunction(defaultSendRequest)
     {
-        grantType = AUTH_CODE_GRANT;
-        sendRequestFunction = defaultSendRequest;
     }
 
     ServiceBuilder &ServiceBuilder::setGrantType(GrantType grantType)
     {
         this->grantType = grantType;
+        return *this;
+    }
+
+    ServiceBuilder &ServiceBuilder::setSignatureType(SignatureType signatureType)
+    {
+        this->signatureType = signatureType;
         return *this;
     }
 
@@ -69,8 +76,8 @@ namespace OAuth2
     Service ServiceBuilder::build()
     {
         checkParameters();
-        ServiceConfiguration configuration(grantType, authEndpoint, tokenEndpoint,
-                clientId, redirectUri, scope, username, password);
+        ServiceConfiguration configuration(grantType, signatureType, authEndpoint,
+                tokenEndpoint, clientId, redirectUri, scope, username, password);
         Service service(configuration, sendRequestFunction);
         return service;
     }
